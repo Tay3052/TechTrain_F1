@@ -1,37 +1,22 @@
-import { useEffect, useState } from "react";
-import "./App.css";
-// import Posts from "./components/Posts";
+import ThreadLists from "./components/ThreadsLists";
+import Header from "./components/ThreadsHeader";
+import { ThreadUpload } from "./components//CreateThread";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
-  const [res, setRes] = useState([]);
-
-  useEffect(() => {
-    fetch(
-      "https://railway.bulletinboard.techtrain.dev/threads?offset=1",
-      { method: "GET" },
-      { mode: "cors" }
-    )
-      // .then((text) => {
-      //   console.log(text);
-      // })
-      .then((responce) => responce.json())
-      .then((item) => {
-        console.log(item);
-        setRes(item);
-      });
-  }, []);
-  // console.log(res);
   return (
     <>
-      <div>
-        <ul>
-          {res.map((item) => (
-            <li key={item.id}>
-              <p className="title">{item.title}</p>
-            </li>
-          ))}
-        </ul>
-      </div>
+      {/* React-router-domでルーティングさせる */}
+      <BrowserRouter>
+        <Routes>
+          {/* Headerは共通のコンポーネントとする */}
+          <Route path="/" element={<Header />}>
+            <Route path="/" element={<ThreadLists />} />
+            {/* スレッドの投稿 */}
+            <Route path="/threads/new/" element={<ThreadUpload />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }
